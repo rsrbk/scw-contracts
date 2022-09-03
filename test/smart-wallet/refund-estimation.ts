@@ -172,7 +172,7 @@ describe("Wallet tx gas estimations with and without refunds", function () {
       )
     )
       .to.emit(walletFactory, "WalletCreated")
-      .withArgs(expected, baseImpl.address, owner);
+      .withArgs(expected, baseImpl.address, owner, "1.0.1", 0);
 
     userSCW = await ethers.getContractAt(
       "contracts/smart-contract-wallet/SmartWallet.sol:SmartWallet",

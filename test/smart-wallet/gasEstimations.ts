@@ -33,7 +33,6 @@ import { provider } from "ganache";
 // i) getting signature twice for estimation
 // ii) relayer should be able to check what is expected spend and what is being paid!
 
-
 function tryDecodeError(bytes: BytesLike): string {
   try {
     return ethers.utils.toUtf8String(
@@ -173,7 +172,7 @@ describe("Wallet tx gas estimations with and without refunds", function () {
       )
     )
       .to.emit(walletFactory, "WalletCreated")
-      .withArgs(expected, baseImpl.address, owner);
+      .withArgs(expected, baseImpl.address, owner, "1.0.1", 0);
 
     userSCW = await ethers.getContractAt(
       "contracts/smart-contract-wallet/SmartWallet.sol:SmartWallet",
@@ -502,7 +501,6 @@ describe("Wallet tx gas estimations with and without refunds", function () {
       safeTx,
       chainId
     );
-
 
     let signature = "0x";
     signature += data.slice(2);
