@@ -57,6 +57,7 @@ contract SmartWallet is
 
     
     // Events
+    // @review Can be packed better and add indexed 
     // EOA + Version tracking
     event ImplementationUpdated(address _scw, string version, address newImplementation);
     event EntryPointChanged(address oldEntryPoint, address newEntryPoint);

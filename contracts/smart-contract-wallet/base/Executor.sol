@@ -6,6 +6,7 @@ import "../common/Enum.sol";
 /// @title Executor - A contract that can execute transactions
 contract Executor {
     // Could add a flag fromEntryPoint for AA txn
+    // @review Can be packed better and add indexed 
     event ExecutionFailure(address to, uint256 value, bytes data, Enum.Operation operation, uint256 txGas);
     event ExecutionSuccess(address to, uint256 value, bytes data, Enum.Operation operation, uint256 txGas);
 
