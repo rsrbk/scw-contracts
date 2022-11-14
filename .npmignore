@@ -1,6 +1,15 @@
 hardhat.config.ts
 scripts
 test
+artifacts
+typechain
+cache
 coverage
-walletUtils.js
 .env
+.env.*
+.secret
+.sol*
+.eslint*
+walletUtils.*
+converage.json
+arguments.js
