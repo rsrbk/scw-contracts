@@ -566,7 +566,7 @@ contract WalletFactory {
     address immutable public _defaultImpl; 
 
     // EOA + Version tracking
-    string public constant VERSION = "1.0.1";
+    string public constant VERSION = "1.0.2";
 
     //states : registry
     mapping (address => bool) public isWalletExist;

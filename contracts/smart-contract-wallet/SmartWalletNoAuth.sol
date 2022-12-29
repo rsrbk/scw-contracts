@@ -33,7 +33,7 @@ contract SmartWalletNoAuth is
     // Storage
 
     // Version
-    string public constant VERSION = "1.0.1"; // Forward enabled refund enhancements
+    string public constant VERSION = "1.0.2"; // Forward enabled refund enhancements
 
     // Domain Seperators
     // keccak256(
