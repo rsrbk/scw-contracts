@@ -24,7 +24,6 @@ contract SmartAccount is
      SecuredTokenTransfer,
      ISignatureValidatorConstants,
      FallbackManager,
-     Initializable,
      ReentrancyGuardUpgradeable
     {
     using ECDSA for bytes32;
@@ -181,7 +180,7 @@ contract SmartAccount is
     // Initialize / Setup
     // Used to setup
     // i. owner ii. entry point address iii. handler
-    function init(address _owner, address _entryPointAddress, address _handler) public override initializer { 
+    function init(address _owner, address _entryPointAddress, address _handler) public override { 
         require(owner == address(0), "Already initialized");
         require(address(_entryPoint) == address(0), "Already initialized");
         require(_owner != address(0),"Invalid owner");
