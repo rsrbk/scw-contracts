@@ -157,6 +157,10 @@ describe("Base Wallet Functionality", function () {
       userSCW.connect(accounts[0]).updateImplementation(baseImpl2.address)
     ).to.emit(userSCW, "ImplementationUpdated");
 
+    // Shouldn't we have to initialise again?
+    // Gnosis example to upgrade using this contract
+    // https://github.com/safe-global/safe-contracts/blob/main/contracts/examples/libraries/Migrate_1_3_0_to_1_2_0.sol
+
     userSCW = await ethers.getContractAt(
       "contracts/smart-contract-wallet/SmartAccount2.sol:SmartAccount2",
       userSCW.address
