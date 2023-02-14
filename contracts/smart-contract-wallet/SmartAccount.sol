@@ -270,7 +270,7 @@ contract SmartAccount is
         uint256 tokenGasPriceFactor,
         address gasToken,
         address payable refundReceiver
-    ) private nonReentrant returns (uint256 payment) {
+    ) internal nonReentrant returns (uint256 payment) {
         // uint256 startGas = gasleft();
         // solhint-disable-next-line avoid-tx-origin
         address payable receiver = refundReceiver == address(0) ? payable(tx.origin) : refundReceiver;
