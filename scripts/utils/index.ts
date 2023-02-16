@@ -293,11 +293,11 @@ const getFeeByNetwork = (networkId: number) => {
   
   switch (networkId) {
     case ChainId.GOERLI:
-      return BigNumber.from((0.1 * 1e18).toString())
+      return BigNumber.from((0.0045 * 1e18).toString())
     case ChainId.POLYGON_MUMBAI:
-      return BigNumber.from((0.1 * 1e18).toString())
+      return BigNumber.from((0.0045 * 1e18).toString())
     default:
-      return BigNumber.from((.0003 * 1e18).toString())
+      return BigNumber.from((0.0045 * 1e18).toString())
   }
 };
 
