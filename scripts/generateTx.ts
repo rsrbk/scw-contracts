@@ -13,7 +13,7 @@ async function main() {
         gasPrice: 100000000000,
         value: 0,
         data: deployerBytecode,
-        gasLimit: 247000,
+        gasLimit: 281247,
         v: 27,
         r: '0x247000',
         s: '0x2470'
