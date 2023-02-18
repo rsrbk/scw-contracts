@@ -118,6 +118,7 @@ contract SmartAccount is
     // todo: write test case for updating implementation
     // review: external function becomes invisible from inside the contract
     // review for all methods to be invoked by smart account to self
+    // maybe only done via delegateCall to migration contract
     function updateImplementation(address _implementation) external mixedAuth {
         require(_implementation.isContract(), "INVALID_IMPLEMENTATION");
         _setImplementation(_implementation);
@@ -187,7 +188,6 @@ contract SmartAccount is
         return a >= b ? a : b;
     }
 
-    // review: batchId should be carefully designed or removed all together (including 2D nonces)
     // Gnosis style transaction with optional repay in native tokens OR ERC20 
     /// @dev Allows to execute a Safe transaction confirmed by required number of owners and then pays the account that submitted the transaction.
     /// Note: The fees are always transferred, even if the user transaction fails.
@@ -306,11 +306,10 @@ contract SmartAccount is
         uint8 v;
         bytes32 r;
         bytes32 s;
-        uint256 i = 0;
         address _signer;
-        (v, r, s) = signatureSplit(signatures, i);
-        //todo add the test case for contract signature
+        (v, r, s) = signatureSplit(signatures, 0);
         if(v == 0) {
+            require(keccak256(data) == dataHash, "BSA027");
             // If v is 0 then it is a contract signature
             // When handling contract signatures the address of the contract is encoded into r
             _signer = address(uint160(uint256(r)));
@@ -318,7 +317,7 @@ contract SmartAccount is
             // Check that signature data pointer (s) is not pointing inside the static part of the signatures bytes
                 // This check is not completely accurate, since it is possible that more signatures than the threshold are send.
                 // Here we only check that the pointer is not pointing inside the part that is being processed
-                require(uint256(s) >= uint256(1) * 65, "BSA021");
+                require(uint256(s) >= 65, "BSA021");
 
                 // Check that signature data pointer (s) is in bounds (points to the length of data -> 32 bytes)
                 require(uint256(s) + 32 <= signatures.length, "BSA022");

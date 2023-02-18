@@ -9,7 +9,14 @@ contract Executor {
     event ExecutionFailure(address to, uint256 value, bytes data, Enum.Operation operation, uint256 txGas);
     event ExecutionSuccess(address to, uint256 value, bytes data, Enum.Operation operation, uint256 txGas);
 
-    // Could add a flag fromEntryPoint for AA txn
+    /**
+     * @notice Executes either a delegatecall or a call with provided parameters.
+     * @param to Destination address.
+     * @param value Ether value.
+     * @param data Data payload.
+     * @param operation Operation type.
+     * @return success boolean flag indicating if the call succeeded.
+     */
     function execute(
         address to,
         uint256 value,
