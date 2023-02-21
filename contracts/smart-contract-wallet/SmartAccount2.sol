@@ -56,12 +56,36 @@ contract SmartAccount2 is SmartAccount {
             if (refundInfo.gasPrice > 0) {
                 //console.log("sent %s", startGas - gasleft());
                 // extraGas = gasleft();
-                payment = super.handlePayment(startGas - gasleft(), refundInfo.baseGas, refundInfo.gasPrice, refundInfo.tokenGasPriceFactor, refundInfo.gasToken, refundInfo.refundReceiver);
+                payment = handlePaymentV2(startGas - gasleft(), refundInfo.baseGas, refundInfo.gasPrice, refundInfo.tokenGasPriceFactor, refundInfo.gasToken, refundInfo.refundReceiver);
                 emit WalletHandlePayment(txHash, payment);
             }
             // extraGas = extraGas - gasleft();
             //console.log("extra gas %s ", extraGas);
         }
+    }
+
+    function handlePaymentV2(
+        uint256 gasUsed,
+        uint256 baseGas,
+        uint256 gasPrice,
+        uint256 tokenGasPriceFactor,
+        address gasToken,
+        address payable refundReceiver
+    ) private nonReentrant returns (uint256 payment) {
+        // uint256 startGas = gasleft();
+        // solhint-disable-next-line avoid-tx-origin
+        address payable receiver = refundReceiver == address(0) ? payable(tx.origin) : refundReceiver;
+        if (gasToken == address(0)) {
+            // For ETH we will only adjust the gas price to not be higher than the actual used gas price
+            payment = (gasUsed + baseGas) * (gasPrice < tx.gasprice ? gasPrice : tx.gasprice);
+            (bool success,) = receiver.call{value: payment}("");
+            require(success, "BSA011");
+        } else {
+            payment = (gasUsed + baseGas) * (gasPrice) / (tokenGasPriceFactor);
+            require(transferToken(gasToken, receiver, payment), "BSA012");
+        }
+        // uint256 requiredGas = startGas - gasleft();
+        //console.log("hp %s", requiredGas);
     }
 
 } 

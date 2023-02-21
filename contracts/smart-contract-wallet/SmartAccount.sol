@@ -65,7 +65,6 @@ contract SmartAccount is
         // so we create an account with fixed non-zero owner.
         // This is an unusable account, perfect for the singleton
         owner = address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
-        _disableInitializers();
     }
 
     
@@ -269,7 +268,7 @@ contract SmartAccount is
         uint256 tokenGasPriceFactor,
         address gasToken,
         address payable refundReceiver
-    ) internal nonReentrant returns (uint256 payment) {
+    ) private nonReentrant returns (uint256 payment) {
         // uint256 startGas = gasleft();
         // solhint-disable-next-line avoid-tx-origin
         address payable receiver = refundReceiver == address(0) ? payable(tx.origin) : refundReceiver;
