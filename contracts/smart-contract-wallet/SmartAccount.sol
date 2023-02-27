@@ -524,7 +524,6 @@ contract SmartAccount is
     internal override virtual returns (uint256 sigTimeRange) {
         // below changes need formal verification.
         bytes calldata userOpData = userOp.callData;
-        // TODO: Add the check for function signuatre in userOpData to be equal to executeCall method signature
         if(userOpData.length > 0) {
             bytes4 methodSig = bytes4(userOpData[:4]);
             // If method to be called is executeCall then only check for module transaction
