@@ -8,6 +8,7 @@ pragma solidity 0.8.12;
 import "@account-abstraction/contracts/interfaces/IAccount.sol";
 import "@account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import "./common/Enum.sol";
+import "hardhat/console.sol";
 
 struct Transaction {
         address to;
@@ -69,6 +70,7 @@ abstract contract BaseSmartAccount is IAccount {
     external override virtual returns (uint256 sigTimeRange) {
         _requireFromEntryPoint();
         sigTimeRange = _validateSignature(userOp, userOpHash, aggregator);
+        console.log("sigTimeRange is %s ", sigTimeRange);
         if (userOp.initCode.length == 0) {
             _validateAndUpdateNonce(userOp);
         }

@@ -33,6 +33,9 @@ import { buildMultiSendSafeTx } from "../../src/utils/multisend";
 import { arrayify, hexConcat, parseEther } from "ethers/lib/utils";
 import { BigNumber, BigNumberish, Contract, Signer } from "ethers";
 
+const FAKE_SIGNATURE =
+  "0x39f5032f1cd30005aa1e35f04394cabfe7de3b6ae6d95b27edd8556064c287bf61f321fead0cf48ca4405d497cc8fc47fc7ff0b7f5c45baa14090a44f2307d8230";
+
 export async function deployEntryPoint(
   provider = ethers.provider
 ): Promise<EntryPoint> {
@@ -214,7 +217,7 @@ describe("Base Wallet Functionality", function () {
     const userOp1 = await fillAndSign(
       {
         sender: walletAddress,
-        verificationGasLimit: 200000,
+        // verificationGasLimit: 5000000,
       },
       walletOwner,
       entryPoint
@@ -245,7 +248,13 @@ describe("Base Wallet Functionality", function () {
       entryPoint
     );
     console.log(userOp);
-    await entryPoint.handleOps([userOp], await offchainSigner.getAddress());
+    const tx = await entryPoint.handleOps(
+      [userOp],
+      await offchainSigner.getAddress()
+    );
+    const receipt = await tx.wait();
+    console.log("receipt");
+    console.log(receipt);
     await expect(
       entryPoint.handleOps([userOp], await offchainSigner.getAddress())
     ).to.be.reverted;
@@ -487,6 +496,7 @@ describe("Base Wallet Functionality", function () {
       entryPoint
     );
     console.log(userOp);
+    userOp.signature = FAKE_SIGNATURE;
     await entryPoint.handleOps([userOp], await offchainSigner.getAddress(), {
       gasLimit: 10000000,
     });
