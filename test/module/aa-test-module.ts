@@ -247,7 +247,7 @@ describe("Base Wallet Functionality", function () {
       walletOwner,
       entryPoint
     );
-    console.log(userOp);
+    console.log("User Op is : ", userOp);
     const tx = await entryPoint.handleOps(
       [userOp],
       await offchainSigner.getAddress()
@@ -503,5 +503,9 @@ describe("Base Wallet Functionality", function () {
     /* await expect(
       entryPoint.handleOps([userOp], await offchainSigner.getAddress())
     ).to.be.reverted; */
+  });
+
+  it("secceed with a valid non-module batch transaction", async () => {
+    // Add test cases for a batch transaction where executeBatchCall is called from EntryPoint
   });
 });

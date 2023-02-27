@@ -508,8 +508,11 @@ contract SmartAccount is
     // userOp could have batchId as well
     function _validateAndUpdateNonce(UserOperation calldata userOp) internal override {
         bytes calldata userOpData = userOp.callData;
-        (address _to, uint _amount, bytes memory _data) = abi.decode(userOpData[4:], (address, uint, bytes));
-        if(address(modules[_to]) != address(0)) return;
+        // TODO: Add the check for function signuatre in userOpData to be equal to executeCall method signature
+        if(userOpData.length > 0) {
+            (address _to, uint _amount, bytes memory _data) = abi.decode(userOpData[4:], (address, uint, bytes));
+            if(address(modules[_to]) != address(0)) return;
+        }
         require(nonces[0]++ == userOp.nonce, "account: invalid nonce");
     }
 
@@ -518,10 +521,13 @@ contract SmartAccount is
     internal override virtual returns (uint256 sigTimeRange) {
         // below changes need formal verification.
         bytes calldata userOpData = userOp.callData;
-        (address _to, uint _amount, bytes memory _data) = abi.decode(userOpData[4:], (address, uint, bytes));
-        console.log("_to address is %s ", _to);
-        console.log("modules[_to] is %s ", modules[_to]);
-        if(address(modules[_to]) != address(0)) return 0;
+        // TODO: Add the check for function signuatre in userOpData to be equal to executeCall method signature
+        if(userOpData.length > 0) {
+            (address _to, uint _amount, bytes memory _data) = abi.decode(userOpData[4:], (address, uint, bytes));
+            console.log("_to address is %s ", _to);
+            console.log("modules[_to] is %s ", modules[_to]);
+            if(address(modules[_to]) != address(0)) return 0;
+        }
         bytes32 hash = userOpHash.toEthSignedMessageHash();
         if (owner != hash.recover(userOp.signature))
             return SIG_VALIDATION_FAILED;
